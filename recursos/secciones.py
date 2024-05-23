@@ -1,4 +1,14 @@
 import flet as ft
+from recursos.funciones import *
+
+def click_Registro(e):
+    registro(tb2.value, tb3.value, tb4.value, tb5.value)
+
+    tb2.value = ""
+    tb3.value = ""
+    tb4.value = ""
+    tb5.value = ""
+    #print("datos registrados")
 
 ###                     ###
 ##  Apartado de registro ##
@@ -9,9 +19,12 @@ tb3 = ft.TextField(label="NOMBRE") # NOMBRENDE LA PRENDA
 tb4 = ft.TextField(label="PRECIO UNIDAD") #PRECIO EN UNIDAD u/C
 tb5 = ft.TextField(label="PRECIO MAYORISTA") # PRECIO MAYOR d/C
 
-b = ft.ElevatedButton(text="Registrar", color="white", icon="CHECK", bgcolor="black")
+b_registro = ft.ElevatedButton(text="Registrar", color="white", icon="CHECK", bgcolor="black", on_click = click_Registro)
 
-contenido = ft.Container(
+
+
+
+Registro = ft.Container(
     ft.Row([
         ft.Container(
             ft.Column(controls= [
@@ -24,7 +37,7 @@ contenido = ft.Container(
                                     expand=2,
                                 ),
                                 ft.Container(
-                                    b,
+                                    b_registro,
                                     expand=1,
                                 ),
                                     ]),
@@ -46,7 +59,7 @@ contenido = ft.Container(
 )
 
 
-contenido_dos = ft.Container(
+Consulta = ft.Container(
     ft.Row([
         ft.Container(
             ft.Column(controls= [
@@ -59,7 +72,7 @@ contenido_dos = ft.Container(
                                     expand=2,
                                 ),
                                 ft.Container(
-                                    b,
+                                    b_registro,
                                     expand=1,
                                 ),
                                     ]),
@@ -80,7 +93,7 @@ contenido_dos = ft.Container(
     ])
 )
 
-contenido_tres = ft.Container(
+Ventas = ft.Container(
     ft.Row([
         ft.Container(
             ft.Column(controls= [
@@ -93,7 +106,7 @@ contenido_tres = ft.Container(
                                     expand=2,
                                 ),
                                 ft.Container(
-                                    b,
+                                    b_registro,
                                     expand=1,
                                 ),
                                     ]),

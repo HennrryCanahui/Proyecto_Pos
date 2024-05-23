@@ -2,6 +2,8 @@ import flet as ft
 from recursos.secciones import *
 
 def main(page:ft.Page):
+    
+
     nav = ft.Container(
         ft.Row([
             ft.Container(
@@ -84,7 +86,7 @@ def main(page:ft.Page):
                     [
                         ft.Row([
                             nav,
-                            contenido,
+                            Registro,
                            
                         ])
                     ],
@@ -98,7 +100,7 @@ def main(page:ft.Page):
 
                         ft.Row([
                             nav,
-                            contenido_dos,
+                            Consulta,
                         ])
                     ],
                 )
@@ -110,7 +112,7 @@ def main(page:ft.Page):
                     [
                         ft.Row([
                             nav,
-                            contenido_tres,
+                            Ventas,
                         ])
                     ],
                 )
