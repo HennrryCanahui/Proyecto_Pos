@@ -1,5 +1,5 @@
 import flet as ft 
-from secciones import *
+from recursos.secciones import *
 
 def main(page:ft.Page):
     nav = ft.Container(
@@ -67,7 +67,7 @@ def main(page:ft.Page):
                 "/",
                 [ft.Row([nav, 
                         ft.Image(
-                            src=r"Comercial_Glendy.png",
+                            src=r"recursos/Comercial_Glendy.png",
                             width=980,
                             height=650,
                             fit=ft.ImageFit.CONTAIN,
