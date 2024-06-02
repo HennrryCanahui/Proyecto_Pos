@@ -1,6 +1,8 @@
 import flet as ft
 from recursos.funciones import *
 
+
+
 class RegistroPage:
     def __init__(self, page):
         self.page = page
@@ -19,7 +21,22 @@ class RegistroPage:
 
         self.alertaRegistro = ft.AlertDialog(
             title=ft.Text("Registro Exitoso", text_align="CENTER"),
-            bgcolor=ft.colors.GREEN,
+            bgcolor=ft.colors.GREEN
+        )
+        
+        self.alertaError = ft.AlertDialog(
+            title=ft.Text("Error de Registro", text_align="CENTER"),
+            bgcolor=ft.colors.RED
+        )
+        
+        self.alertaCamposVacios = ft.AlertDialog(
+            title=ft.Text("Campos Vacíos", text_align="CENTER"),
+            bgcolor=ft.colors.ORANGE
+        )
+
+        self.alertaPrecios = ft.AlertDialog(
+            title=ft.Text("Error de Precios", text_align="CENTER"),
+            bgcolor=ft.colors.RED
         )
 
         self.Registro = ft.Container(
@@ -50,13 +67,39 @@ class RegistroPage:
         )
 
     def click_Registro(self, e):
-        registro(self.tb2.value, self.tb3.value, self.tb4.value, self.tb5.value)
-        self.tb2.value = ""
-        self.tb3.value = ""
-        self.tb4.value = ""
-        self.tb5.value = ""
-        self.page.dialog = self.alertaRegistro
-        self.alertaRegistro.open = True
+        id = self.tb2.value
+        nombre = self.tb3.value
+        precio_unidad = self.tb4.value
+        precio_mayor = self.tb5.value
+        
+        campos_validos, id, mensaje_campos = verificar_campos(id, nombre, precio_unidad, precio_mayor)
+        if not campos_validos:
+            self.alertaCamposVacios.content = ft.Text(mensaje_campos)
+            self.page.dialog = self.alertaCamposVacios
+            self.page.dialog.open = True
+            self.page.update()
+            return
+
+        precios_validos, mensaje_precios = verificar_precios(precio_unidad, precio_mayor)
+        if not precios_validos:
+            self.alertaPrecios.content = ft.Text(mensaje_precios)
+            self.page.dialog = self.alertaPrecios
+            self.page.dialog.open = True
+            self.page.update()
+            return
+
+        success, message = registro(id, nombre, precio_unidad, precio_mayor)
+        if success:
+            self.tb2.value = ""
+            self.tb3.value = ""
+            self.tb4.value = ""
+            self.tb5.value = ""
+            self.page.dialog = self.alertaRegistro
+        else:
+            self.alertaError.content = ft.Text(message)
+            self.page.dialog = self.alertaError
+        
+        self.page.dialog.open = True
         self.page.update()
 
 
