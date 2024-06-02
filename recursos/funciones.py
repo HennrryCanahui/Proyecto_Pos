@@ -1,6 +1,5 @@
 import sqlite3
 
-
 def conexion():
     database = r'database\comercial.sqlite'
     try:
@@ -34,28 +33,43 @@ def registro(id, nombre, precio_unidad, precio_mayor):
         print(f"Error de integridad al insertar los datos: {e}")
     except sqlite3.Error as e:
         print(f"Error en la operación de base de datos: {e}")
+    finally:
+        conn.close()
 
-def consulta(conn, id):
-    
+def consulta(id):
+    conn = conexion()
+    if conn is None:
+        return
+    try:
+        sql = '''SELECT * FROM datos WHERE id = ?'''
+        cur = conn.cursor()
+        cur.execute(sql, (id,))
+        resultado = cur.fetchone()
+        if resultado is not None:
+            print("Precio Unidad: ", resultado[2])
+        else:
+            print("No se encontró el producto con el id dado.")
+        return resultado
+    except sqlite3.Error as e:
+        print(f"Error en la operación de base de datos: {e}")
+    finally:
+        conn.close()
 
-    sql = '''SELECT * FROM datos WHERE id = ?'''
-
-    cur = conn.cursor()
-    cur.execute(sql, (id,))
-    resultado = cur.fetchone()
-    if resultado is not None:
-        print("Precio Unidad: ", resultado[2])
-    else:
-        print("No se encontró el producto con el id dado.")
-    return resultado
-
-def consulta_mayor(conn, id):
-    sql = '''SELECT * FROM datos WHERE id = ?'''
-    cur = conn.cursor()
-    cur.execute(sql, (id,))
-    resultado = cur.fetchone()
-    if resultado is not None:
-        print("Precio Unidad: ", resultado[3])
-    else:
-        print("No se encontró el producto con el id dado.")
-    return resultado
+def consulta_mayor(id):
+    conn = conexion()
+    if conn is None:
+        return
+    try:
+        sql = '''SELECT * FROM datos WHERE id = ?'''
+        cur = conn.cursor()
+        cur.execute(sql, (id,))
+        resultado = cur.fetchone()
+        if resultado is not None:
+            print("Precio Mayorista: ", resultado[3])
+        else:
+            print("No se encontró el producto con el id dado.")
+        return resultado
+    except sqlite3.Error as e:
+        print(f"Error en la operación de base de datos: {e}")
+    finally:
+        conn.close()

@@ -1,19 +1,21 @@
 import flet as ft 
-from recursos.secciones import *
+from recursos.secciones import RegistroPage, ConsultaPage, VentasPage
 
-def main(page:ft.Page):
-    
+def main(page: ft.Page):
+    registro_page = RegistroPage(page)
+    consulta_page = ConsultaPage(page)
+    ventas_page = VentasPage(page)
 
     nav = ft.Container(
         ft.Row([
             ft.Container(
-                ft.Column(controls= [
+                ft.Column(controls=[
                     ft.Text(
                         'OPCIONES',
                         width=360,
                         size=30,
-                        weight ='w900',
-                        text_align = 'center'
+                        weight='w900',
+                        text_align='center'
                     ),
                     ft.Container(
                         ft.IconButton(
@@ -21,9 +23,9 @@ def main(page:ft.Page):
                             icon_color="BLACK",
                             icon_size=40,
                             tooltip="AÑADIR",
-                            on_click=lambda _: page.go("/nav_uno")  
+                            on_click=lambda _: page.go("/nav_uno")
                         ),
-                        padding = ft.padding.only(65)
+                        padding=ft.padding.only(65)
                     ),
                     ft.Container(
                         ft.IconButton(
@@ -31,9 +33,9 @@ def main(page:ft.Page):
                             icon_color="BLACK",
                             icon_size=40,
                             tooltip="BUSQUEDA",
-                            on_click=lambda _: page.go("/nav_dos")  
+                            on_click=lambda _: page.go("/nav_dos")
                         ),
-                        padding = ft.padding.only(65)
+                        padding=ft.padding.only(65)
                     ),
                     ft.Container(
                         ft.IconButton(
@@ -41,42 +43,43 @@ def main(page:ft.Page):
                             icon_color="BLACK",
                             icon_size=40,
                             tooltip="VENTA",
-                            on_click=lambda _: page.go("/nav_tres")  
+                            on_click=lambda _: page.go("/nav_tres")
                         ),
-                        padding = ft.padding.only(65),
+                        padding=ft.padding.only(65),
                     )
-                ], 
-                alignment = ft.MainAxisAlignment.SPACE_EVENLY,       
+                ],
+                alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                 ),
-                gradient= ft.LinearGradient(['purple', 'blue']),     
+                gradient=ft.LinearGradient(['purple', 'blue']),
                 width=180,
-                height =650,
+                height=650,
                 border_radius=20,
-                margin =15,
+                margin=15,
             ),
         ],
-        ),   
+        ),
     )
-    page.window_width =1250
-    page.window_min_width =1250
+    page.window_width = 1250
+    page.window_min_width = 1250
     page.window_min_height = 720
     page.padding = 0
     page.theme_mode = ft.ThemeMode.SYSTEM
+
     def route_change(route):
         page.views.clear()
         page.views.append(
             ft.View(
                 "/",
-                [ft.Row([nav, 
-                        ft.Image(
-                            src=r"recursos/Comercial_Glendy.png",
-                            width=980,
-                            height=650,
-                            fit=ft.ImageFit.CONTAIN,
-                            border_radius=ft.border_radius.all(15),
-                        )
-
-                    ])]
+                [ft.Row([nav,
+                         ft.Image(
+                             src=r"recursos/Comercial_Glendy.png",
+                             width=980,
+                             height=650,
+                             fit=ft.ImageFit.CONTAIN,
+                             border_radius=ft.border_radius.all(15),
+                         )
+                         ])
+                ]
             )
         )
         if page.route == "/nav_uno":
@@ -86,8 +89,7 @@ def main(page:ft.Page):
                     [
                         ft.Row([
                             nav,
-                            Registro,
-                           
+                            registro_page.Registro,
                         ])
                     ],
                 )
@@ -97,10 +99,9 @@ def main(page:ft.Page):
                 ft.View(
                     "/nav_dos",
                     [
-
                         ft.Row([
                             nav,
-                            Consulta,
+                            consulta_page.Consulta,
                         ])
                     ],
                 )
@@ -112,7 +113,7 @@ def main(page:ft.Page):
                     [
                         ft.Row([
                             nav,
-                            Ventas,
+                            ventas_page.Ventas,
                         ])
                     ],
                 )
