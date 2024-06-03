@@ -124,3 +124,7 @@ def main(page: ft.Page):
     page.go(page.route)
 
 ft.app(target=main)
+
+
+
+#https://www.officedepot.com.gt/officedepotGuatemala/en/Papel-autoadherible/ETIQUETA-POCHTECA-%28ADHESIVA%2C-CARTA%2C-BLANCO%29/p/1204000132

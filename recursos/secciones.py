@@ -102,6 +102,12 @@ class RegistroPage:
         self.page.dialog.open = True
         self.page.update()
 
+#==================
+#==   MEJORAS    ==
+#==================
+# se le tiene que añadir la funcion donde tiene que usar el id para crear el codigo de barras
+# para luego mandarlo a emprimir en un doc word   
+
 
 
 
