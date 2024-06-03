@@ -59,12 +59,15 @@ def consulta(id):
         cur.execute(sql, (id,))
         resultado = cur.fetchone()
         if resultado is not None:
-            print("Precio Unidad: ", resultado[2])
+            pass
+            #print("Precio Unidad: ", resultado[2])
         else:
-            print("No se encontró el producto con el id dado.")
+            pass
+            #print("No se encontró el producto con el id dado.")
         return resultado
     except sqlite3.Error as e:
-        print(f"Error en la operación de base de datos: {e}")
+        pass
+        #print(f"Error en la operación de base de datos: {e}")
     finally:
         conn.close()
 
@@ -78,22 +81,19 @@ def consulta_mayor(id):
         cur.execute(sql, (id,))
         resultado = cur.fetchone()
         if resultado is not None:
-            print("Precio Mayorista: ", resultado[3])
+            pass
+            #print("Precio Mayorista: ", resultado[3])
         else:
-            print("No se encontró el producto con el id dado.")
+            pass
+            #print("No se encontró el producto con el id dado.")
         return resultado
     except sqlite3.Error as e:
-        print(f"Error en la operación de base de datos: {e}")
+        pass
+        #print(f"Error en la operación de base de datos: {e}")
     finally:
         conn.close()
 
-
-
-
-
-
 ########################################################
-
 
 def verificar_campos(id, nombre, precio_unidad, precio_mayor):
     if not id:

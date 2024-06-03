@@ -2,7 +2,6 @@ import flet as ft
 from recursos.funciones import *
 
 
-
 class RegistroPage:
     def __init__(self, page):
         self.page = page
@@ -48,6 +47,11 @@ class RegistroPage:
             bgcolor=ft.colors.RED
         )
 
+        self.alertaImpresion = ft.AlertDialog(
+            title=ft.Text("Registros enviados a imprimir", text_align="CENTER"),
+            bgcolor=ft.colors.BLUE
+        )
+
         self.Registro = ft.Container(
             ft.Row([
                 ft.Container(
@@ -90,6 +94,8 @@ class RegistroPage:
             self.list_id = []
             self.contador = 0
             self.cont.value = f"Registro para imprimir: {self.contador}"
+            self.page.dialog = self.alertaImpresion
+            self.page.dialog.open = True
             self.page.update()
 
     def click_Registro(self, e):
@@ -135,7 +141,6 @@ class RegistroPage:
 
 
 
-
 class ConsultaPage:
     def __init__(self, page):
         self.page = page
@@ -150,7 +155,13 @@ class ConsultaPage:
         )
 
         self.alertaConsulta = ft.AlertDialog(
-            title=ft.Text("Consulta Exitosa", bgcolor=ft.colors.GREEN)
+            title=ft.Text("Consulta Exitosa",size=35,text_align="CENTER"),
+            bgcolor=ft.colors.GREEN
+        )
+
+        self.alertaError = ft.AlertDialog(
+            title=ft.Text("Error en la Consulta",size=35, text_align="CENTER"),
+            bgcolor=ft.colors.RED
         )
 
         self.Consulta = ft.Container(
@@ -180,7 +191,18 @@ class ConsultaPage:
         )
 
     def click_Buscar(self, e):
-        consulta(self.tb2.value)  # Ahora solo pasa `id`
+        id = self.tb2.value
+        resultado = consulta(id)
+
+        if resultado is not None:
+            mensaje = f"Precio Unidad: Q{resultado[2]}\nPrecio Mayorista: Q{resultado[3]}"
+            self.alertaConsulta.content = ft.Text(mensaje, size= 30, text_align="CENTER")
+            self.page.dialog = self.alertaConsulta
+        else:
+            self.alertaError.content = ft.Text("No se encontró el producto con el id dado.", size=30, text_align="CENTER")
+            self.page.dialog = self.alertaError
+
+        self.page.dialog.open = True
         self.tb2.value = ""
         self.page.update()
 
