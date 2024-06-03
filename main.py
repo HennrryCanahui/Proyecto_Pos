@@ -46,7 +46,27 @@ def main(page: ft.Page):
                             on_click=lambda _: page.go("/nav_tres")
                         ),
                         padding=ft.padding.only(65),
-                    )
+                    ),
+                    ft.Container(
+                        ft.IconButton(
+                            icon=ft.icons.LOCAL_PRINT_SHOP_ROUNDED,
+                            icon_color="BLACK",
+                            icon_size=40,
+                            tooltip="IMPRIMIR ",
+                            on_click=lambda _: page.go("/nav_uno")
+                        ),
+                        padding=ft.padding.only(65)
+                    ),
+                    ft.Container(
+                        ft.IconButton(
+                            icon=ft.icons.SETTINGS,
+                            icon_color="BLACK",
+                            icon_size=40,
+                            tooltip="AJUSTES ",
+                            on_click=lambda _: page.go("/nav_uno")
+                        ),
+                        padding=ft.padding.only(65)
+                    ),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                 ),

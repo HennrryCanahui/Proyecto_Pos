@@ -1,5 +1,16 @@
 import sqlite3
 import random
+import os
+import barcode
+from barcode.writer import ImageWriter
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import cm
+
+
+
+
+
 
 def conexion():
     database = r'database\comercial.sqlite'
@@ -86,7 +97,7 @@ def consulta_mayor(id):
 
 def verificar_campos(id, nombre, precio_unidad, precio_mayor):
     if not id:
-        id = str(random.randint(1000000, 9999999))
+        id = str(random.randint(10**12, 10**13 - 1))
     
     if not (nombre and precio_unidad and precio_mayor):
         return False, id, "Hay campos vacíos. Por favor, complete todos los campos."
@@ -102,3 +113,57 @@ def verificar_precios(precio_unidad, precio_mayor):
         return True, None
     except ValueError:
         return False, "Los precios deben ser valores numéricos."
+    
+
+######################################################################################################################
+# AQUI TIENE QUE IR LA FUNCION PARA COMVERTIR LOS ID EN CODIGOS DE BARRAS PARA LUEGO MANDARLOS A IMPRIMIR EN UN PDF  #
+######################################################################################################################
+
+
+def generar_codigos_barras_pdf(ids, output_filename='codigos_barras.pdf'):
+    # Generar códigos de barras y guardar nombres de archivos
+    codigos_barras = []
+    for id in ids:
+        EAN = barcode.get_barcode_class('ean13')
+        codigo_barra = EAN(str(id).zfill(12), writer=ImageWriter())
+        filename = f"codigo_barra_{id}"
+        full_filename = codigo_barra.save(filename)
+        codigos_barras.append(full_filename)
+
+    # Crear el PDF con los códigos de barras
+    c = canvas.Canvas(output_filename, pagesize=letter)
+    width, height = letter
+    x = 1 * cm  # Margen izquierdo de 1 cm
+    y = height - 1 * cm  # Margen superior de 1 cm
+    
+    barra_ancho = 3 * cm
+    barra_alto = 2 * cm  # Ajustar el alto según sea necesario
+    margen = 0.5 * cm
+    
+    for codigo_barra in codigos_barras:
+        if os.path.exists(codigo_barra):
+            c.drawImage(codigo_barra, x, y - barra_alto, width=barra_ancho, height=barra_alto)
+            x += barra_ancho + margen
+            if x + barra_ancho > width - 1 * cm:  # Si se sale del ancho de la página
+                x = 1 * cm  # Reiniciar al margen izquierdo
+                y -= barra_alto + margen  # Bajar a la siguiente fila
+            
+            if y - barra_alto < 1 * cm:  # Si se sale del alto de la página
+                c.showPage()
+                x = 1 * cm
+                y = height - 1 * cm
+        else:
+            print(f"Archivo no encontrado: {codigo_barra}")
+    
+    c.save()
+    print(f"PDF generado: {output_filename}")
+
+    # Eliminar archivos de imagen temporales
+    for codigo_barra in codigos_barras:
+        try:
+            if os.path.exists(codigo_barra):
+                os.remove(codigo_barra)
+            else:
+                print(f"No se pudo encontrar el archivo para eliminar: {codigo_barra}")
+        except Exception as e:
+            print(f"No se pudo eliminar el archivo {codigo_barra}: {e}")

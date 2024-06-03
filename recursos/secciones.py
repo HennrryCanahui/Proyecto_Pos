@@ -10,8 +10,17 @@ class RegistroPage:
         self.tb3 = ft.TextField(label="NOMBRE")
         self.tb4 = ft.TextField(label="PRECIO UNIDAD")
         self.tb5 = ft.TextField(label="PRECIO MAYORISTA")
-
-        self.b_registro = ft.ElevatedButton(
+        self.contador = 0
+        self.list_id = []
+        self.cont = ft.Text(f"Registro para imprimir: {self.contador}")
+        
+        self.print = ft.IconButton(
+            icon=ft.icons.LOCAL_PRINT_SHOP_ROUNDED,
+            icon_color="BLACK",
+            on_click=self.click_imprimir
+        )
+        
+        self.registro = ft.ElevatedButton(
             text="Registrar",
             color="white",
             icon="CHECK",
@@ -50,9 +59,18 @@ class RegistroPage:
                             ),
                             ft.Row(controls=[
                                 ft.Container(self.tb2, expand=2),
-                                ft.Container(self.b_registro, expand=1),
+                                ft.Container(self.registro, expand=1),
                             ]),
                             self.tb3, self.tb4, self.tb5,
+
+                            ft.Container(height=30),
+                            ft.Divider(color="WHITE"),
+
+                            ft.Row(controls=[
+                                ft.Container(self.print, expand=1),
+                                ft.Container(self.cont, expand=4),
+                            ]),
+                            ft.Divider(color="WHITE"),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                     ),
@@ -65,6 +83,14 @@ class RegistroPage:
                 )
             ])
         )
+
+    def click_imprimir(self, e):
+        if self.list_id:
+            generar_codigos_barras_pdf(self.list_id)
+            self.list_id = []
+            self.contador = 0
+            self.cont.value = f"Registro para imprimir: {self.contador}"
+            self.page.update()
 
     def click_Registro(self, e):
         id = self.tb2.value
@@ -94,6 +120,9 @@ class RegistroPage:
             self.tb3.value = ""
             self.tb4.value = ""
             self.tb5.value = ""
+            self.list_id.append(id)
+            self.contador += 1
+            self.cont.value = f"Registro para imprimir: {self.contador}"
             self.page.dialog = self.alertaRegistro
         else:
             self.alertaError.content = ft.Text(message)
@@ -102,11 +131,7 @@ class RegistroPage:
         self.page.dialog.open = True
         self.page.update()
 
-#==================
-#==   MEJORAS    ==
-#==================
-# se le tiene que añadir la funcion donde tiene que usar el id para crear el codigo de barras
-# para luego mandarlo a emprimir en un doc word   
+
 
 
 
@@ -116,7 +141,7 @@ class ConsultaPage:
         self.page = page
         self.tb2 = ft.TextField(label="ID", autofocus=True)
         
-        self.b_buscar = ft.ElevatedButton(
+        self.buscar = ft.ElevatedButton(
             text="Buscar",
             color="white",
             icon="SEARCH",
@@ -139,7 +164,7 @@ class ConsultaPage:
                             ),
                             ft.Row(controls=[
                                 ft.Container(self.tb2, expand=2),
-                                ft.Container(self.b_buscar, expand=1),
+                                ft.Container(self.buscar, expand=1),
                             ]),
                         ],
                         alignment=ft.MainAxisAlignment.START,
@@ -174,7 +199,7 @@ class VentasPage:
         self.page = page
         self.tb2 = ft.TextField(label="ID", autofocus=True)
 
-        self.b_registro = ft.ElevatedButton(
+        self.venta = ft.ElevatedButton(
             text="Vender",
             color="white",
             icon="SHOPPING_CART",
@@ -197,7 +222,7 @@ class VentasPage:
                             ),
                             ft.Row(controls=[
                                 ft.Container(self.tb2, expand=2),
-                                ft.Container(self.b_registro, expand=1),
+                                ft.Container(self.venta, expand=1),
                             ]),
                         ],
                         alignment=ft.MainAxisAlignment.START,
