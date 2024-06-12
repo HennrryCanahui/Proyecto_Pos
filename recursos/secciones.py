@@ -16,7 +16,7 @@ class RegistroPage:
         self.print = ft.IconButton(
             icon=ft.icons.LOCAL_PRINT_SHOP_ROUNDED,
             icon_color="BLACK",
-            on_click=self.click_imprimir
+            on_click=self.click_imprimir_dialog
         )
         
         self.registro = ft.ElevatedButton(
@@ -48,8 +48,11 @@ class RegistroPage:
         )
 
         self.alertaImpresion = ft.AlertDialog(
-            title=ft.Text("Registros enviados a imprimir", text_align="CENTER"),
-            bgcolor=ft.colors.BLUE
+            title=ft.Text("Seleccione la cantidad de copias por ID"),
+            content=ft.Container(),
+            actions=[
+                ft.TextButton("Imprimir", on_click=self.click_imprimir)
+            ]
         )
 
         self.Registro = ft.Container(
@@ -88,15 +91,45 @@ class RegistroPage:
             ])
         )
 
+    def click_imprimir_dialog(self, e):
+        list_view_content = []
+        self.id_copias_fields = {}
+        for id in self.list_id:
+            field = ft.TextField(label="Cant", value="", width=100)
+            self.id_copias_fields[id] = field
+            list_view_content.append(ft.Row([ft.Text(f"ID: {id}"), field]))
+        
+        self.alertaImpresion.content = ft.ListView(controls=list_view_content)
+        self.alertaImpresion.open = True
+        self.page.dialog = self.alertaImpresion
+        self.page.update()
+
     def click_imprimir(self, e):
-        if self.list_id:
-            generar_codigos_barras_pdf(self.list_id)
+        id_copias_list = []
+        for id, field in self.id_copias_fields.items():
+            copias = int(field.value)
+            id_copias_list.append((id, copias))
+    
+        if id_copias_list:
+            generar_codigos_barras_pdf(id_copias_list)
             self.list_id = []
             self.contador = 0
             self.cont.value = f"Registro para imprimir: {self.contador}"
-            self.page.dialog = self.alertaImpresion
+            self.alertaImpresion.open = False
+            self.page.dialog = ft.AlertDialog(
+                title=ft.Text("Impresión Exitosa"),
+                content=ft.Text("Registros mandados a imprimir exitosamente."),
+                bgcolor=ft.colors.GREEN
+            )
             self.page.dialog.open = True
-            self.page.update()
+        print("id:",self.list_id)
+        print("Cant:",id_copias_list)
+        self.page.update()
+
+
+
+
+
 
     def click_Registro(self, e):
         id = self.tb2.value

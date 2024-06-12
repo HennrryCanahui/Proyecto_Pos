@@ -4,6 +4,7 @@ import os
 import barcode
 from barcode.writer import ImageWriter
 from reportlab.lib.pagesizes import letter
+from barcode import get_barcode_class
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 
@@ -97,7 +98,11 @@ def consulta_mayor(id):
 
 def verificar_campos(id, nombre, precio_unidad, precio_mayor):
     if not id:
-        id = str(random.randint(10**12, 10**13 - 1))
+        while True:
+            id = random.randint(10**12, 10**13 - 1)
+            if len(str(id)) == 13:
+                break
+        id = str(id)
     
     if not (nombre and precio_unidad and precio_mayor):
         return False, id, "Hay campos vacíos. Por favor, complete todos los campos."
@@ -120,15 +125,20 @@ def verificar_precios(precio_unidad, precio_mayor):
 ######################################################################################################################
 
 
-def generar_codigos_barras_pdf(ids, output_filename='codigos_barras.pdf'):
+
+
+
+
+def generar_codigos_barras_pdf(id_copias_list, output_filename='codigos_barras.pdf'):
     # Generar códigos de barras y guardar nombres de archivos
     codigos_barras = []
-    for id in ids:
-        EAN = barcode.get_barcode_class('ean13')
-        codigo_barra = EAN(str(id).zfill(12), writer=ImageWriter())
-        filename = f"codigo_barra_{id}"
-        full_filename = codigo_barra.save(filename)
-        codigos_barras.append(full_filename)
+    for id, copias in id_copias_list:
+        CODE128 = get_barcode_class('code128')
+        for i in range(copias):
+            codigo_barra = CODE128(str(id), writer=ImageWriter())
+            filename = f"codigo_barra_{id}_{i}"
+            full_filename = codigo_barra.save(filename)
+            codigos_barras.append(full_filename)
 
     # Crear el PDF con los códigos de barras
     c = canvas.Canvas(output_filename, pagesize=letter)
@@ -136,7 +146,7 @@ def generar_codigos_barras_pdf(ids, output_filename='codigos_barras.pdf'):
     x = 1 * cm  # Margen izquierdo de 1 cm
     y = height - 1 * cm  # Margen superior de 1 cm
     
-    barra_ancho = 3 * cm
+    barra_ancho = 3.5 * cm
     barra_alto = 2 * cm  # Ajustar el alto según sea necesario
     margen = 0.5 * cm
     
