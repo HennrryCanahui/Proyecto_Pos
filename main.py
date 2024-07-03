@@ -1,10 +1,11 @@
 import flet as ft 
-from recursos.secciones import RegistroPage, ConsultaPage, VentasPage
+from recursos.secciones import RegistroPage, ConsultaPage, VentasPage, RecibosPage
 
 def main(page: ft.Page):
     registro_page = RegistroPage(page)
     consulta_page = ConsultaPage(page)
     ventas_page = VentasPage(page)
+    recibos_page = RecibosPage(page)
 
     nav = ft.Container(
         ft.Row([
@@ -53,7 +54,7 @@ def main(page: ft.Page):
                             icon_color="BLACK",
                             icon_size=40,
                             tooltip="IMPRIMIR ",
-                            on_click=lambda _: page.go("/nav_uno")
+                            on_click=lambda _: page.go("/nav_cuatro")
                         ),
                         padding=ft.padding.only(65)
                     ),
@@ -138,13 +139,24 @@ def main(page: ft.Page):
                     ],
                 )
             )
+        elif page.route == "/nav_cuatro":
+            page.views.append(
+                ft.View(
+                    "/nav_cuatro",
+                    [
+                        ft.Row([
+                            nav,
+                            recibos_page.Recibos,
+                        ])
+                    ],
+                )
+            )
         page.update()
 
     page.on_route_change = route_change
     page.go(page.route)
 
 ft.app(target=main)
-
 
 
 #https://www.officedepot.com.gt/officedepotGuatemala/en/Papel-autoadherible/ETIQUETA-POCHTECA-%28ADHESIVA%2C-CARTA%2C-BLANCO%29/p/1204000132

@@ -1,0 +1,33 @@
+import flet as ft 
+
+
+
+
+
+def main(page: ft.Page):
+
+
+
+
+    tabla = ft.Container(
+
+
+
+
+
+
+      width=150,
+      height=150,
+      bgcolor= "white",
+      margin=15
+    ) 
+
+    page.add(
+        tabla
+    )
+
+
+
+
+
+ft.app(target=main)

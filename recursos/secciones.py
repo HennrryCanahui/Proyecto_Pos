@@ -240,15 +240,6 @@ class ConsultaPage:
         self.page.update()
 
 
-
-
-
-
-
-
-
-
-
 class VentasPage:
     def __init__(self, page):
         self.page = page
@@ -296,3 +287,41 @@ class VentasPage:
         #vender(self.tb2.value)  # Asumiendo que hay una función `vender` definida en `recursos.funciones`
         self.tb2.value = ""
         self.page.update()
+
+
+class RecibosPage:
+    def __init__(self,page):
+        self.page = page
+
+        self.imprimir = ft.IconButton(
+            icon=ft.icons.LOCAL_PRINTSHOP_ROUNDED,
+            icon_size=80,
+            on_click=self.on_click_imprimir
+        )
+
+        self.Recibos = ft.Container(
+            ft.Row([
+                ft.Container(
+                    ft.Column(
+                        controls=[
+                            ft.Container(
+                                ft.Text("RECIBOS", size=35, color="BLACK"),
+                                alignment=ft.alignment.center,
+                            ),
+                            ft.Row(controls=[
+                                ft.Container(self.imprimir)
+                            ])
+                        ],
+                        alignment=ft.MainAxisAlignment.START,
+                    ),
+                    gradient=ft.LinearGradient(['blue', 'purple']),
+                    width=980,
+                    height=650,
+                    border_radius=20,
+                    margin=15,
+                    padding=20
+                )
+            ])
+        )
+    def on_click_imprimir(self, e):
+        Facturacion()
