@@ -295,8 +295,10 @@ class RecibosPage:
 
         self.imprimir = ft.IconButton(
             icon=ft.icons.LOCAL_PRINTSHOP_ROUNDED,
-            icon_size=80,
-            on_click=self.on_click_imprimir
+            icon_size=150,
+            on_click=self.on_click_imprimir,
+            padding= 50,
+            icon_color = "black"
         )
 
         self.Recibos = ft.Container(
@@ -310,7 +312,8 @@ class RecibosPage:
                             ),
                             ft.Row(controls=[
                                 ft.Container(self.imprimir)
-                            ])
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,)
                         ],
                         alignment=ft.MainAxisAlignment.START,
                     ),

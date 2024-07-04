@@ -322,7 +322,7 @@ def crear_pdf(datos, pdf_filename="recibo.pdf"):
     # Monto total
     y_position -= 20
     c.setLineWidth(2)
-    c.line(150, 665, 250, 665)
+    c.line(x_margin + 130, y_position + 25, x_margin + 240, y_position + 25)
     c.drawString(x_margin + 175, y_position + 10, "Total:")
     c.drawString(x_margin + 200, y_position + 10, str(datos['monto_total']))
 
